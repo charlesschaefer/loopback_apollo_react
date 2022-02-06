@@ -6,8 +6,9 @@ class TodoList extends Component<{list:Todo[]},{}> {
 
     render() {
         const todoItems = this.props.list.map((item:Todo) => {
-            <TodoItem item={item} />
+            return (<TodoItem item={item} key={item.id} />)
         });
+        console.log(todoItems);
 
         return (
             <section id="todo-list-container">

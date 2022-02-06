@@ -1,39 +1,52 @@
 import React, { Component, ReactNode } from "react";
+import { ApolloClient, InMemoryCache } from '@apollo/client';
+
 import Todo from "../types/Todo";
 import AddTodoButton from "./AddTodoButton";
 import DoneFilter from "./DoneFilter";
 import SearchTodo from "./SearchTodo";
 import TodoList from "./TodoList";
+import TodoService from "../services/TodoService";
 
-import ApolloClient from 'apollo-boost';
 
 const client = new ApolloClient({
-    uri: 'http://localhost:3000'
+    uri: 'http://localhost:4000',
+    cache: new InMemoryCache
 });
 
-//import './App.css';
 
 type AppState = {
     doneFilter:boolean,
     searchTerm:string,
-    todoList: Todo[]
+    todoList: Todo[],
+    unfilteredTodoList: Todo[]
 };
 
 class App extends Component<{}, AppState> {
     state:AppState = {
         doneFilter: false,
         searchTerm: '',
-        todoList:[]
+        todoList:[],
+        unfilteredTodoList:[]
     }
+    todoService:TodoService;
 
-    unfilteredTodoList:Todo[] = [];
+    constructor(props:any) {
+        super(props);
+        this.todoService = new TodoService(client);
+
+        // loads all todos
+        this.todoService.getTodos().then((value:any) => {
+            this.setState({todoList: value.data.todos, unfilteredTodoList: value.data.todos});
+        });
+    }
 
     onDoneFilterChange(checked:boolean):void {
         // buscar as todos isCompleted = true
     }
 
     onSearch(searchTerm:string) {
-        const todoList = this.unfilteredTodoList.filter((value:Todo, index:number) => {
+        const todoList = this.state.unfilteredTodoList.filter((value:Todo, index:number) => {
             const title = value.title.toLowerCase();
             if (title.indexOf(searchTerm.toLowerCase()) !== -1) {
                 return true;
