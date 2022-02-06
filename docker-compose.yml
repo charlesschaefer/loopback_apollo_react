@@ -7,12 +7,12 @@ services:
         working_dir: "/home/node/app"
         volumes:
             - ./back/loopback:/home/node/app
-            #- ./front:/home/node/app/public
+            - ./front/build:/home/node/app/public
         ports:
             - 3000:3000
         environment:
-            MARIADB_USER: ${MARIADB_USER:-dbuser}
-            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbpass}
+            MARIADB_USER: ${MARIADB_USER:?Please, add MARIADB_USER to .env file}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Please, add MARIADB_PASSWORD to .env file}
             MARIADB_HOST: "db"
         command: "npm start"
 
@@ -21,9 +21,9 @@ services:
         volumes:
             - ./data:/var/lib/mysql
         environment:
-            MARIADB_USER: ${MARIADB_USER:-dbuser}
-            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbpass}
-            MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-dbrootpass}
+            MARIADB_USER: ${MARIADB_USER:?Please, add MARIADB_USER to .env file}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Please, add MARIADB_PASSWORD to .env file}
+            MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Please, add MARIADB_ROOT_PASSWORD to .env file}
         restart: "always"
         ports:
             - 3306:3306
@@ -36,7 +36,7 @@ services:
         ports:
             - 4000:4000
         environment:
-            MARIADB_USER: ${MARIADB_USER:-dbuser}
-            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbpass}
+            MARIADB_USER: ${MARIADB_USER:?Please, add MARIADB_USER to .env file}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Please, add MARIADB_PASSWORD to .env file}
             MARIADB_HOST: "db"
         command: "npm start"

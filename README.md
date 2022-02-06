@@ -24,12 +24,23 @@ A small project to test some technologies
 Running the project
 ===================
 
+You need to have `docker` and `docker-compose` and `npm` installed.
+
 Instal all the dependencies inside the directories:
 - front
 - back
 - graphql-server
 
-You need to have `docker` and `docker-compose` and `npm` installed.
+Then, build the frontend code with the command:
+```
+cd front
+npm run build
+```
+
+This will setup what is needed to run the frontend code by just accessing `localhost:3000`.
+
+Remember that to change the code, the better approach is to run `npm start` inside the front directory and access `localhost:3030`.
+
 
 The database credentials must be provided as environment variables to the `docker-compose` command. 
 You can create a `.env` file with the following variables:
@@ -44,4 +55,6 @@ And the `docker-compose` will find it automatically. Or just run the command pas
 ```
 $ MARIADB_USER=user MARIADB_PASSWORD=password MARIADB_ROOT_PASSWORD=root_password docker-compose up
 ```
+
+
 
