@@ -1,0 +1,42 @@
+version: "3.3"
+
+services:
+    nodejs:
+        image: node:16
+        user: "node"
+        working_dir: "/home/node/app"
+        volumes:
+            - ./back/loopback:/home/node/app
+            #- ./front:/home/node/app/public
+        ports:
+            - 3000:3000
+        environment:
+            MARIADB_USER: ${MARIADB_USER:-dbuser}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbpass}
+            MARIADB_HOST: "db"
+        command: "npm start"
+
+    db:
+        image: mariadb:latest
+        volumes:
+            - ./data:/var/lib/mysql
+        environment:
+            MARIADB_USER: ${MARIADB_USER:-dbuser}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbpass}
+            MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-dbrootpass}
+        restart: "always"
+        ports:
+            - 3306:3306
+    graphql:
+        image: node:16
+        user: "node"
+        working_dir: "/home/node/app"
+        volumes:
+            - ./graphql-server:/home/node/app
+        ports:
+            - 4000:4000
+        environment:
+            MARIADB_USER: ${MARIADB_USER:-dbuser}
+            MARIADB_PASSWORD: ${MARIADB_PASSWORD:-dbpass}
+            MARIADB_HOST: "db"
+        command: "npm start"
