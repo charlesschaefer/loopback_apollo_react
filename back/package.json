@@ -1,7 +1,7 @@
 {
-  "name": "node_maria_vue_graphql_loopback",
+  "name": "loopback_react_graphql",
   "version": "0.0.1",
-  "description": "A little project to test new Node functions with Typescript, MariaDB, VueJS, GraphQL and Loopback 4",
+  "description": "A little project to test Loopback 4 with Typescript, MariaDB, React and GraphQL",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
