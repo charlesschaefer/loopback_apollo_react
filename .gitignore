@@ -4,4 +4,4 @@ node_modules
 data
 back/loopback/dist
 back/loopback/node_modules
-
+.env
