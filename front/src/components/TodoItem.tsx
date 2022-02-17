@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Card, ListGroup, Form } from "react-bootstrap";
 
 import Todo from '../types/Todo';
 import Person from '../types/Person';
@@ -24,16 +25,13 @@ class TodoItem extends Component<MyProps, {}> {
 
     public render() {
         return (
-            <div className="todo-item">
-                <input 
-                    type="checkbox" 
+            <ListGroup.Item className="todo-item">
+                <Form.Check type="checkbox"
                     checked={this.state.item.isComplete} 
                     onChange={this.onChange}
+                    label={this.state.item.title}
                 />
-                <label className="todo-title">
-                    {this.state.item.title}
-                </label>
-            </div>
+            </ListGroup.Item>
         );
     }
 }

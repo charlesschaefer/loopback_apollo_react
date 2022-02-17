@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
+import { BsPlusCircleFill } from "react-icons/bs";
 
 class AddTodoButton extends Component {
     onClick = (e:React.FormEvent<HTMLButtonElement>) => {
@@ -8,8 +10,10 @@ class AddTodoButton extends Component {
     render() {
         return (
             <section className="add-todo-button">
-                <span>(+)</span>
-                <button onClick={this.onClick}>Add Task</button>
+                <Button onClick={this.onClick}>
+                    <BsPlusCircleFill></BsPlusCircleFill>
+                    &nbsp;Add Task
+                </Button>
             </section>
         )
     }

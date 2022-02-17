@@ -1,4 +1,7 @@
 import React, { ButtonHTMLAttributes, Component } from "react";
+import { Button, Stack, Form } from "react-bootstrap";
+
+declare type FormControlElement = HTMLInputElement | HTMLTextAreaElement;
 
 class SearchTodo extends Component<{onSearch:Function}, {searchTerm:string}> {
     state = {
@@ -9,21 +12,21 @@ class SearchTodo extends Component<{onSearch:Function}, {searchTerm:string}> {
         this.props.onSearch(this.state.searchTerm);
     }
 
-    onChange = (e:React.FormEvent<HTMLInputElement>) => {
+    onChange = (e:React.ChangeEvent<FormControlElement>) => {
         this.setState({searchTerm: e.currentTarget.value});
     }
 
     render() {
         return (
-            <section className="search-todo">
-                <input 
-                    className="search-field"
-                    value={this.state.searchTerm}
-                    placeholder='Type to filter todos'
-                    onChange={this.onChange}
-                />
-                <button onClick={this.onClick}>Filter</button>
-            </section>
+            <Stack direction="horizontal" className="search-todo">
+                    <Form.Control 
+                        className="search-field" 
+                        value={this.state.searchTerm}
+                        placeholder='Type to filter todos'
+                        onChange={this.onChange}
+                    />
+                    <Button onClick={this.onClick}>Filter</Button>
+            </Stack>
         )
     }
 }

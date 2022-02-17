@@ -1,5 +1,8 @@
 import React, { Component, ReactNode } from "react";
 import { ApolloClient, InMemoryCache } from '@apollo/client';
+import { Container, Row, Col } from 'react-bootstrap';
+
+import "./App.css";
 
 import Todo from "../types/Todo";
 import AddTodoButton from "./AddTodoButton";
@@ -7,6 +10,7 @@ import DoneFilter from "./DoneFilter";
 import SearchTodo from "./SearchTodo";
 import TodoList from "./TodoList";
 import TodoService from "../services/TodoService";
+import { renderToStringWithData } from "@apollo/client/react/ssr";
 
 
 const client = new ApolloClient({
@@ -37,12 +41,36 @@ class App extends Component<{}, AppState> {
 
         // loads all todos
         this.todoService.getTodos().then((value:any) => {
-            this.setState({todoList: value.data.todos, unfilteredTodoList: value.data.todos});
+            const todoList = this._filterCompleted(this.state.doneFilter, value.data.todos);
+
+            this.setState({todoList: todoList, unfilteredTodoList: value.data.todos});
+
         });
+
+        this.onDoneFilterChange = this.onDoneFilterChange.bind(this);
+        this.onSearch = this.onSearch.bind(this);
+    }
+
+    /**
+     * Helper method to filter completed tasks if needed
+     * @param showCompleted 
+     * @returns 
+     */
+    _filterCompleted(showCompleted:boolean, unfilteredTodoList:Todo[]):Todo[] {
+        if (!showCompleted) {
+            return unfilteredTodoList.filter(
+                (value:Todo, index:number) => !value.isComplete
+            );
+        }
+        return unfilteredTodoList;
     }
 
     onDoneFilterChange(checked:boolean):void {
         // buscar as todos isCompleted = true
+        let todoList = this._filterCompleted(checked, this.state.unfilteredTodoList);
+       
+        // filtrar apenas as todos da lista buscada
+        this.setState({ todoList });
     }
 
     onSearch(searchTerm:string) {
@@ -59,18 +87,27 @@ class App extends Component<{}, AppState> {
     
     render() {
         return (
-            <div id="app">
-            <header className="App-header">
-            <img src="/logo512.png" className="App-logo" alt="logo" />
-            <h1>Todo App</h1>
-            </header>
-            <section className="app-container">
-                <DoneFilter onChange={this.onDoneFilterChange}/>
-                <SearchTodo onSearch={this.onSearch} />
-                <TodoList list={this.state.todoList} />
-                <AddTodoButton />
-            </section>
-            </div>
+            <Container className="app" fluid>
+                <Row>
+                    <Col>
+                        <header className="app-header contain mx-auto">
+                            <h1>Todo App</h1>
+                        </header>
+                    </Col>
+                </Row>
+                <Container className="app-container">
+                    <Row className="app-search">    
+                        <DoneFilter onChange={this.onDoneFilterChange}/>
+                        <SearchTodo onSearch={this.onSearch} />
+                    </Row>
+                    <Row>    
+                        <TodoList list={this.state.todoList} />
+                    </Row>
+                    <Row>    
+                        <AddTodoButton />
+                    </Row>
+                </Container>
+            </Container>
         );
     }
 }

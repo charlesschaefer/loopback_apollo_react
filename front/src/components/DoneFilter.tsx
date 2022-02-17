@@ -1,4 +1,5 @@
 import React, { Component, ReactNode } from "react";
+import { Row, Form } from "react-bootstrap";
 
 class DoneFilter extends Component<{onChange:Function}, {checked:boolean}> {
     state = {
@@ -13,14 +14,17 @@ class DoneFilter extends Component<{onChange:Function}, {checked:boolean}> {
 
     render() {
         return (
-            <section className='done-filter'>
-                <label>
-                    <input type='checkbox' 
-                        checked={this.state.checked} 
-                        onChange={this.onChange} 
-                    />
-                </label>
-            </section>
+            <Row className="done-filter">
+                <Form.Group>
+                    <Form.Label>
+                        <Form.Check type="checkbox"
+                            checked={this.state.checked} 
+                            onChange={this.onChange} 
+                            label="Show complete tasks"
+                        />
+                    </Form.Label>
+                </Form.Group>
+            </Row>
         )
     }
 }
